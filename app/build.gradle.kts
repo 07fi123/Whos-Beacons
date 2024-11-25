@@ -14,8 +14,8 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
     }
 
     buildTypes {
@@ -52,6 +52,11 @@ dependencies {
     implementation(libs.ramani.maplibre)
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.fragment.compose)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.logging.interceptor)
+    implementation(libs.play.services.location)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
