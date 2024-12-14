@@ -7,8 +7,8 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.9.3"
-composeBom = "2024.11.00"
-ramaniMaplibre = "0.7.0"
+composeBom = "2024.12.01"
+ramaniMaplibre = "0.8.1"
 activityKtx = "1.9.3"
 fragmentCompose = "1.8.5"
 retrofit = "2.11.0"
@@ -16,6 +16,7 @@ converterGson = "2.11.0"
 kotlinxCoroutinesAndroid = "1.9.0"
 loggingInterceptor = "5.0.0-alpha.14"
 playServicesLocation = "21.3.0"
+navigationCompose = "2.8.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -40,6 +41,7 @@ converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", ve
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "loggingInterceptor" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

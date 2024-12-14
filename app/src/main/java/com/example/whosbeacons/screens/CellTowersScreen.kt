@@ -26,8 +26,6 @@ fun CellTowersScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    val location by viewModel.location.collectAsState()
-
 
     Column(
         modifier = modifier

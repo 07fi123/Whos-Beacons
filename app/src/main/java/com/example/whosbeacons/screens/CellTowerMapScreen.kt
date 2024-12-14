@@ -9,7 +9,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.unit.dp
 import com.example.whosbeacons.viewModel.CellTowersViewModel
 import com.example.whosbeacons.viewModel.UiState
 import org.maplibre.android.geometry.LatLng
@@ -29,11 +28,11 @@ fun CellTowerMapScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-
-
     val locationProperties = rememberSaveable { locationPropertiesState }
     val cameraPosition = rememberSaveable { mutableStateOf(CameraPosition()) }
     val userLocation = rememberSaveable { mutableStateOf(Location(null)) }
+    val styleUrl = rememberSaveable { mutableStateOf("https://tiles.openfreemap.org/styles/liberty") }
+    val styleBuilder = Style.Builder().fromUri(styleUrl.value)
 
 
     Box {
@@ -47,7 +46,8 @@ fun CellTowerMapScreen(
                 cameraPosition = cameraPosition.value,
                 userLocation = userLocation,
                 locationProperties = locationProperties,
-                modifier = Modifier
+                modifier = Modifier,
+                styleBuilder = styleBuilder
             )
 
         }
@@ -78,12 +78,12 @@ fun Towers(
 
         is UiState.Success -> {
 
-            val centerLat = state.cellTowers.map { it.lat }.average()
-            val centerLon = state.cellTowers.map { it.lon }.average()
-
             state.cellTowers.forEach { tower ->
+                val centerLat = tower.lat
+                val centerLon = tower.lon
+                Log.d("TAG", "Towers: "+tower.radio)
                 CircleWithItem(
-                    center = LatLng(tower.lat, tower.lon),
+                    center = LatLng(centerLat,centerLon),
                     text = "Cell Tower - ${tower.radio}",
                     radius = tower.range.toFloat(),
                     color = when (tower.radio) {
@@ -118,7 +118,8 @@ fun MapView(
     cameraPosition: CameraPosition,
     userLocation: MutableState<Location>,
     locationProperties: MutableState<LocationRequestProperties?>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    styleBuilder: Style.Builder
 ) {
 
 
@@ -127,7 +128,7 @@ fun MapView(
     Box(modifier = modifier) {
         MapLibre(
             modifier = Modifier.fillMaxSize(),
-            styleBuilder = Style.Builder().fromUri("https://tiles.openfreemap.org/styles/liberty"),
+            styleBuilder = styleBuilder,
             cameraPosition = cameraPosition,
             locationRequestProperties = locationProperties.value,
             locationStyling = LocationStyling(
@@ -135,10 +136,8 @@ fun MapView(
                 pulseColor = Color.LightGray.toArgb(),
             ),
             userLocation = userLocation,
-        ) {
-            Towers(
-                uiState = uiState
-            )
-        }
+
+        )
+
     }
 }

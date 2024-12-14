@@ -1,6 +1,7 @@
 package com.example.whosbeacons.viewModel
 
 import android.location.Location
+import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -33,8 +34,10 @@ class CellTowersViewModel(
         // Start location updates
         viewModelScope.launch {
             locationManager.locationFlow().collect { location ->
-                _location.value = location
-                fetchCellTowersForLocation(location)
+                if (location.latitude != _location.value?.latitude || location.longitude != _location.value?.longitude) {
+                    _location.value = location
+                    fetchCellTowersForLocation(location)
+                }
             }
         }
     }
@@ -42,6 +45,7 @@ class CellTowersViewModel(
     private suspend fun fetchCellTowersForLocation(location: Location) {
         try {
             _uiState.value = UiState.Loading
+            Log.d("WHOSBEACONS", "fetchIngCellTowersForLocation: ")
 
             // Calculate bounding box around current location (approximately 1km)
             val latOffset = 0.003 // roughly 1km in latitude
@@ -51,8 +55,9 @@ class CellTowersViewModel(
                     "${location.latitude + latOffset},${location.longitude + lonOffset}"
 
 
-            val response = NetworkModule.apiService.getCellTowers("your api key..", bbox)
+            val response = NetworkModule.apiService.getCellTowers("pk.90a92bc66c60005a53df85dcc45a05a6", bbox)
             _uiState.value = UiState.Success(response.cells)
+            Log.d("WHOSBEACONS", "fetchEDCellTowersForLocation: "+response)
         } catch (e: Exception) {
             _uiState.value = UiState.Error(e.message ?: "Unknown error occurred")
         }
